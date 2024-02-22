@@ -9,5 +9,5 @@ private enum EnumTest {
     }
 }
 
-//let a: EventType = .other(<#T##String#>)
+//let a: EnumTest = .other(<#T##String#>)
 
