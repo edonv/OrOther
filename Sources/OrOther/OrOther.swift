@@ -1,17 +1,21 @@
-/// A macro that generates additional members of the attached enum `RawRepresentable` enum from a nested `private` `Options` enum, adding an `.other(_:)` case. The `.other(_:)` case has an associated value of the same type as the `Options` enum's raw value. produces both a value and a string containing the
-/// source code that generated the value.
+/// `OrOther` is a macro that adds a "blank" `.other(_:)` case to any enum.
 ///
-/// It adds a synthesized computed `rawValue` property and `init(rawValue:)` initializer.
+/// For it to work, just create an empty enum, add a `private` nested enum called `Options` with an explicit raw value type, add the explicit cases you want, then tack `@OrOther` onto the primary enum.
+/// `OrOther` will automatically synthesize the any enum cases you add to `Options`, then add an extra `.other(_:)` case. The `.other(_:)` case has an associated value of the same type as the `Options` enum's raw value.
 ///
-/// `rawValue` returns the `rawValue` of the matching case from the nested `Options` enum, unless it's `.other`, in which case, the associated value is returned.
+/// It also automatically synthesizes conformace to `RawRepresentable` for the attached enum, by adding a synthesized computed `rawValue` property and `init(rawValue:)` initializer:
+///     - `rawValue` returns the `rawValue` of the matching case from the nested `Options` enum, unless it's `.other`, in which case, the associated value is returned.
+///     - `init(rawValue:)` is *non-failable*, as it first tries to match the `rawValue` to that of the `Options` enum and return the matching case. If there isn't a matching case in `Options`, it returns `rawValue` as the associated value of an `.other` case.
 ///
-/// `init(rawValue:)` can't fail, as it tried to match the `rawValue` to that of the `Options` enum, and return the matching case. If there isn't a matching case, it returns the value inside an `.other` case.
+/// `OrOther` also adds automatic conformance to other protocols where available, such as `Codable`, `Equatable`, and `Hashable`.
 ///
 /// ## Example
 ///
+/// ### Usage
+///
 /// ```swift
-/// @OrOther<String>
-/// private enum EnumTest {
+/// @OrOther
+/// enum EnumTest {
 ///     private enum Options: String {
 ///         case a
 ///         case b
@@ -19,6 +23,60 @@
 ///     }
 /// }
 /// ```
+///
+/// ### Synthesized Output
+///
+/// ```swift
+/// enum EnumTest {
+///     private enum Options: String { ... }
+///
+///     typealias RawValue = String
+///
+///     case a, b, c, dfjdf, flahfeo, ldjfl, other(String)
+///
+///     var rawValue: RawValue {
+///         switch self {
+///         case .a:
+///             return Options.a.rawValue
+///         case .b:
+///             return Options.b.rawValue
+///         case .c:
+///             return Options.c.rawValue
+///         case .dfjdf:
+///             return Options.dfjdf.rawValue
+///         case .flahfeo:
+///             return Options.flahfeo.rawValue
+///         case .ldjfl:
+///             return Options.ldjfl.rawValue
+///         case .other(let string):
+///             return string
+///         }
+///     }
+///
+///     init(rawValue: RawValue) {
+///         if let this = Options(rawValue: rawValue) {
+///             switch this {
+///             case .a:
+///                 self = .a
+///             case .b:
+///                 self = .b
+///             case .c:
+///                 self = .c
+///             case .dfjdf:
+///                 self = .dfjdf
+///             case .flahfeo:
+///                 self = .flahfeo
+///             case .ldjfl:
+///                 self = .ldjfl
+///             }
+///         } else {
+///             self = .other(rawValue)
+///         }
+///     }
+/// }
+/// ```
+///
 @attached(extension, conformances: RawRepresentable, Equatable, Hashable)
 @attached(member, names: named(RawValue), named(rawValue), named(`init`), arbitrary)
+public macro OrOther/*<RawType>*/() =
     #externalMacro(module: "OrOtherMacros", type: "OrOtherMacro")
