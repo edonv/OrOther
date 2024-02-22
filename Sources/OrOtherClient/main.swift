@@ -1,8 +1,16 @@
 import OrOther
 
-let a = 17
-let b = 25
+@OrOther<String>
+private enum EnumTest {
+    private enum Options: String {
+        case a
+        case b
+        case c, dfjdf, flahfeo, ldjfl
+    }
+}
 
-let (result, code) = #stringify(a + b)
+//extension EventType: Hashable {
+//}
 
-print("The value \(result) was produced by the code \"\(code)\"")
+//let a: EventType = .other(<#T##String#>)
+
