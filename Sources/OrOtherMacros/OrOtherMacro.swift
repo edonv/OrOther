@@ -71,7 +71,7 @@ public struct OrOtherMacro: MemberMacro {
         // cases
         let casesDecl = EnumCaseDeclSyntax {
             for enumCase in optionEnumCaseElements {
-                EnumCaseElementSyntax(name: enumCase.name)
+                EnumCaseElementSyntax(name: enumCase.name.trimmed)
             }
             
             EnumCaseElementSyntax(
@@ -94,7 +94,7 @@ public struct OrOtherMacro: MemberMacro {
                             CodeBlockItemSyntax(
                                 item: .expr(try! SwitchExprSyntax("switch self") {
                                     for enumCase in optionEnumCaseElements {
-                                        SwitchCaseSyntax("case .\(enumCase.name): return Options.\(enumCase.name).rawValue")
+                                        SwitchCaseSyntax("case .\(enumCase.name.trimmed): return Options.\(enumCase.name.trimmed).rawValue")
                                     }
                                     
                                     SwitchCaseSyntax("case .other(let string): return string")
