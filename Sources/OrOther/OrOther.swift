@@ -21,5 +21,4 @@
 /// ```
 @attached(extension, conformances: RawRepresentable, Equatable, Hashable)
 @attached(member, names: named(RawValue), named(rawValue), named(`init`), arbitrary)
-public macro OrOther<RawType>() =
     #externalMacro(module: "OrOtherMacros", type: "OrOtherMacro")

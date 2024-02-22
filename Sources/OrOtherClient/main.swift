@@ -1,6 +1,5 @@
 import OrOther
 
-@OrOther<String>
 private enum EnumTest {
     private enum Options: String {
         case a
