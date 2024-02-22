@@ -29,13 +29,13 @@ public struct OrOtherMacro: MemberMacro {
             return []
         }
         
-        // Extract exactly 1 generic type from enum,
-        guard let genericClause = node.attributeName.as(IdentifierTypeSyntax.self)?.genericArgumentClause,
-              genericClause.arguments.count == 1,
-              let rawType = genericClause.arguments.first?.argument else {
-            context.diagnose(OrOtherMacroDiagnostic.requiresEnum1RawType.diagnose(at: node))
-            return []
-        }
+//        // Extract exactly 1 generic type from enum,
+//        guard let genericClause = node.attributeName.as(IdentifierTypeSyntax.self)?.genericArgumentClause,
+//              genericClause.arguments.count == 1,
+//              let rawType = genericClause.arguments.first?.argument else {
+//            context.diagnose(OrOtherMacroDiagnostic.requiresEnum1RawType.diagnose(at: node))
+//            return []
+//        }
         
         // RawValue type from Options enum,
         guard let optionsRawType = optionEnumDecl.inheritanceClause?.inheritedTypes.first?.type else {
@@ -43,13 +43,13 @@ public struct OrOtherMacro: MemberMacro {
             return []
         }
         
-        // ...and make sure they match
-        guard case .identifier(let genericTypeName) = rawType.as(IdentifierTypeSyntax.self)?.name.tokenKind,
-              case .identifier(let optionsRawTypeName) = optionsRawType.as(IdentifierTypeSyntax.self)?.name.tokenKind,
-              genericTypeName == optionsRawTypeName else {
-            context.diagnose(OrOtherMacroDiagnostic.requiresRawTypesMatch.diagnose(at: node))
-            return []
-        }
+//        // ...and make sure they match
+//        guard case .identifier(let genericTypeName) = rawType.as(IdentifierTypeSyntax.self)?.name.tokenKind,
+//              case .identifier(let optionsRawTypeName) = optionsRawType.as(IdentifierTypeSyntax.self)?.name.tokenKind,
+//              genericTypeName == optionsRawTypeName else {
+//            context.diagnose(OrOtherMacroDiagnostic.requiresRawTypesMatch.diagnose(at: node))
+//            return []
+//        }
         
         // Make sure it has at least one case
         let optionEnumCaseElements: [EnumCaseElementSyntax] = optionEnumDecl.memberBlock.members
@@ -66,7 +66,7 @@ public struct OrOtherMacro: MemberMacro {
         let access = declaration.modifiers.first(where: \.isAccessLevelModifier)
 
         // typealias
-        let rawValueTypeAliasDecl: DeclSyntax = "\(access)typealias RawValue = \(rawType)"
+        let rawValueTypeAliasDecl: DeclSyntax = "\(access)typealias RawValue = \(optionsRawType)"
         
         // cases
         let casesDecl = EnumCaseDeclSyntax {
@@ -76,7 +76,7 @@ public struct OrOtherMacro: MemberMacro {
             
             EnumCaseElementSyntax(
                 name: .identifier("other"),
-                parameterClause: .init(parameters: [.init(type: rawType.trimmed)])
+                parameterClause: .init(parameters: [.init(type: optionsRawType.trimmed)])
             )
         }.as(DeclSyntax.self)
         
