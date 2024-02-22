@@ -76,7 +76,7 @@
 /// }
 /// ```
 ///
-@attached(extension, conformances: RawRepresentable, Equatable, Hashable)
+@attached(extension, conformances: RawRepresentable)
 @attached(member, names: named(RawValue), named(rawValue), named(`init`), arbitrary)
 public macro OrOther() =
     #externalMacro(module: "OrOtherMacros", type: "OrOtherMacro")
