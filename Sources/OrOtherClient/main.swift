@@ -9,8 +9,5 @@ private enum EnumTest {
     }
 }
 
-//extension EventType: Hashable {
-//}
-
 //let a: EventType = .other(<#T##String#>)
 
