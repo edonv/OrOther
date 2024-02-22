@@ -138,10 +138,12 @@ extension OrOtherMacro: ExtensionMacro {
         conformingTo protocols: [TypeSyntax],
         in context: some MacroExpansionContext
     ) throws -> [ExtensionDeclSyntax] {
+        let preInheritedTypes = declaration.inheritanceClause?.inheritedTypes ?? []
+        
         var extensions = [DeclSyntax]()
         
         // MARK: RawRepresentable
-        if !protocols.contains(where: { $0.as(InheritedTypeSyntax.self)?.type == "RawRepresentable" }) {
+        if !preInheritedTypes.contains(where: { $0.type.trimmedDescription == "RawRepresentable" }) {
             extensions.append("extension \(type.trimmed): RawRepresentable {}")
         }
         
