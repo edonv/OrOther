@@ -19,10 +19,6 @@ let package = Package(
             name: "OrOther",
             targets: ["OrOther"]
         ),
-        .executable(
-            name: "OrOtherClient",
-            targets: ["OrOtherClient"]
-        ),
     ],
     dependencies: [
         // Depend on the Swift 5.9 release of SwiftSyntax
