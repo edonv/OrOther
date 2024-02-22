@@ -111,7 +111,7 @@ public struct OrOtherMacro: MemberMacro {
             try! IfExprSyntax("if let this = Options(rawValue: rawValue)") {
                 try! SwitchExprSyntax("switch this") {
                     for enumCase in optionEnumCaseElements {
-                        SwitchCaseSyntax("case .\(enumCase.name): self = .\(enumCase.name)")
+                        SwitchCaseSyntax("case .\(enumCase.name.trimmed): self = .\(enumCase.name.trimmed)")
                     }
                 }
             } else: {
