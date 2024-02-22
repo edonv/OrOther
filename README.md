@@ -1,6 +1,6 @@
 # OrOther
 
-`OrOther` is a macro that adds a "blank" `.other(_:)` case to any enum. All that's needed is to create a nearly blank enum, add a `private` nested enum called `Options` with an explicit raw value type, add the explicit cases you want, then tack `@OrOther` onto the primary enum.
+`OrOther` is a macro that adds a "blank" `.other(_:)` case to any enum. All that's needed is to create an empty enum, add a `private` nested enum called `Options` with an explicit raw value type, add the explicit cases you want, then tack `@OrOther` onto the primary enum.
 
 `OrOther` will automatically synthesize the any enum cases you add to `Options`, then add an extra `.other(_:)` case. The `.other(_:)` case has an associated value of the same type as the `Options` enum's raw value.
 
