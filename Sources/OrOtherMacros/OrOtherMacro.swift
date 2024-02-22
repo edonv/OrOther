@@ -29,7 +29,7 @@ public struct OrOtherMacro: MemberMacro {
             return []
         }
         
-        // Extract 1 generic type from enum,
+        // Extract exactly 1 generic type from enum,
         guard let genericClause = node.attributeName.as(IdentifierTypeSyntax.self)?.genericArgumentClause,
               genericClause.arguments.count == 1,
               let rawType = genericClause.arguments.first?.argument else {
