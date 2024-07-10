@@ -21,7 +21,7 @@ enum EnumTest {
     private enum Options: String {
         case a
         case b
-        case c, dfjdf, flahfeo, ldjfl
+        case c, d, e, f
     }
 }
 ```
@@ -34,7 +34,7 @@ enum EnumTest {
     
     typealias RawValue = String
 
-    case a, b, c, dfjdf, flahfeo, ldjfl, other(String)
+    case a, b, c, d, e, f, other(String)
 
     var rawValue: RawValue {
         switch self {
@@ -44,12 +44,12 @@ enum EnumTest {
             return Options.b.rawValue
         case .c:
             return Options.c.rawValue
-        case .dfjdf:
-            return Options.dfjdf.rawValue
-        case .flahfeo:
-            return Options.flahfeo.rawValue
-        case .ldjfl:
-            return Options.ldjfl.rawValue
+        case .d:
+            return Options.d.rawValue
+        case .e:
+            return Options.e.rawValue
+        case .f:
+            return Options.f.rawValue
         case .other(let string):
             return string
         }
@@ -64,12 +64,12 @@ enum EnumTest {
                 self = .b
             case .c:
                 self = .c
-            case .dfjdf:
-                self = .dfjdf
-            case .flahfeo:
-                self = .flahfeo
-            case .ldjfl:
-                self = .ldjfl
+            case .d:
+                self = .d
+            case .e:
+                self = .e
+            case .f:
+                self = .f
             }
         } else {
             self = .other(rawValue)
