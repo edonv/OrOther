@@ -17,6 +17,15 @@ public struct OrOtherMacro: MemberMacro {
             return []
         }
         
+        // Make sure the primary enum is *not* private (or else it can't add the RawRepresentable extension).
+        // If the declaration already includes explicit conformance to RawRepresentable, it lets it slide.
+        // This is because it can't generate an extension to add RawRepresentable conformance to a private type.
+        guard !declaration.modifiers.contains(where: \.isPrivateAccessLevelModifier)
+                || (declaration.inheritanceClause?.inheritedTypes ?? []).contains(type: "RawRepresentable") else {
+            context.diagnose(OrOtherMacroDiagnostic.requiresEnumNotPrivateOrExplicitRawRep.diagnose(at: declaration))
+            return []
+        }
+        
         // Parse the first nested member as an enum named Options
         guard let optionEnumDecl = declaration.memberBlock.members.compactMap({ $0.decl.as(EnumDeclSyntax.self) }).first else {
             context.diagnose(OrOtherMacroDiagnostic.requiresOptionsEnum.diagnose(at: declaration))

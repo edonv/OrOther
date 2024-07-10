@@ -12,6 +12,9 @@ import SwiftSyntax
 enum OrOtherMacroDiagnostic {
     case requiresEnum
     case requiresEnum1RawType
+    case requiresEnumNotPrivateOrExplicitRawRep
+    case requiresEnumNotPrivate
+    case TEST(String)
     case requiresOptionsEnum
     case requiresOptionsEnumRawType
     case requiresRawTypesMatch
@@ -31,6 +34,14 @@ extension OrOtherMacroDiagnostic: DiagnosticMessage {
             
         case .requiresEnum1RawType:
             return "'OrOther' macro requires 1 raw type"
+            
+        case .TEST(let str):
+            return str
+            
+        case .requiresEnumNotPrivateOrExplicitRawRep:
+            return "'OrOther' macro requires that the attached enum must either not be 'private', or that it explicitly conforms to RawRepresentable."
+        case .requiresEnumNotPrivate:
+            return "'OrOther' macro requires that the attached enum must not be 'private'. It cannot generate an extension for a private type."
             
         case .requiresOptionsEnum:
             return "'OrOther' macro requires nested options enum 'Options'"
