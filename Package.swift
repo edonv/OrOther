@@ -51,6 +51,7 @@ let package = Package(
             name: "OrOtherTests",
             dependencies: [
                 "OrOtherMacros",
+                "OrOther",
                 .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
             ]
         ),
