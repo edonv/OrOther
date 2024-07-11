@@ -84,8 +84,8 @@ enum EnumTest {
 
 ## Supported Protocols
 
-The following are protocols that can be added to the primary enum that conformance to which can be automatically synthesized:
-- `Encodable`
-- `Decodable`
-- `Codable`
+The following protocols can be explicitly added to the primary enum, and `@OrOther` its conformance will be automatically synthesized:
+- `Equatable`
+- `Hashable`
+- `Encodable` / `Decodable` / `Codable`
 - `CaseIterable`
