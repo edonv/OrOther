@@ -10,4 +10,3 @@ private enum EnumTest {
 }
 
 //let a: EnumTest = .other(<#T##String#>)
-
