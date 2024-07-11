@@ -73,7 +73,7 @@ public struct OrOtherMacro: MemberMacro {
         
         // Get access control keyword from primary declaration
         let access = declaration.modifiers.first(where: \.isAccessLevelModifier)
-
+        
         // MARK: - CaseIterable
         
         let allCases: DeclSyntax?
