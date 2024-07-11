@@ -37,3 +37,10 @@ extension DeclModifierSyntax {
         ].contains(keyword)
     }
 }
+
+extension InheritedTypeListSyntax {
+    /// Returns a `Bool` value indicating whether the list contains a type with the given name.
+    func containsType(withName typeName: String) -> Bool {
+        self.contains(where: { $0.type.trimmedDescription == typeName })
+    }
+}
