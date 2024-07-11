@@ -11,13 +11,17 @@ It also automatically synthesizes conformace to `RawRepresentable` for the attac
 - `rawValue` returns the `rawValue` of the matching case from the nested `Options` enum, unless it's `.other`, in which case, the associated value is returned.
 - `init(rawValue:)` is *non-failable*, as it first tries to match the `rawValue` to that of the `Options` enum and return the matching case. If there isn't a matching case in `Options`, it returns `rawValue` as the associated value of an `.other` case.
 
+You can then add other protocols to your primary enum as you'd like (e.g. adding `Codable` to `EnumTest` in the example below).
+
+Additionally, due to macros not being able to add an extension for a `private` type, you cannot make the primary enum `private`. The only workaround as of now is to explictly conform the primary enum to `RawRepresentable`.
+
 ## Example
 
 ### Usage
 
 ```swift
 @OrOther
-enum EnumTest {
+enum EnumTest: Codable {
     private enum Options: String {
         case a
         case b
@@ -77,3 +81,11 @@ enum EnumTest {
     }
 }
 ```
+
+## Supported Protocols
+
+The following are protocols that can be added to the primary enum that conformance to which can be automatically synthesized:
+- `Encodable`
+- `Decodable`
+- `Codable`
+- `CaseIterable`
