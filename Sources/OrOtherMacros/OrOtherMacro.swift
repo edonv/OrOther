@@ -74,6 +74,29 @@ public struct OrOtherMacro: MemberMacro {
         // Get access control keyword from primary declaration
         let access = declaration.modifiers.first(where: \.isAccessLevelModifier)
 
+        // MARK: - CaseIterable
+        
+        let allCases: DeclSyntax?
+        let isCaseIterable = (declaration.inheritanceClause?.inheritedTypes ?? []).containsType(withName: "CaseIterable")
+        let containsAllCases = declaration.memberBlock.members.contains { memberItem in
+            guard let varDecl = memberItem.decl.as(VariableDeclSyntax.self),
+                  varDecl.modifiers.contains(where: { $0.name.trimmedDescription == "static" })
+                    && varDecl.bindings.contains(where: {
+                        $0.pattern.as(IdentifierPatternSyntax.self)?.identifier.trimmedDescription == "allCases"
+                    }) else { return false }
+            return true
+        }
+        
+        if isCaseIterable
+            && !containsAllCases {
+            let enumCases = optionEnumCaseElements
+                .map(\.name.trimmedDescription)
+                .map { ".\($0)" }
+            allCases = "\(access)static let allCases: [Self] = [\(raw: enumCases.joined(separator: ", "))]"
+        } else {
+            allCases = nil
+        }
+        
         // typealias
         let rawValueTypeAliasDecl: DeclSyntax = "\(access)typealias RawValue = \(optionsRawType)"
         
@@ -129,6 +152,7 @@ public struct OrOtherMacro: MemberMacro {
         }.as(DeclSyntax.self)
         
         return [
+            allCases,
             rawValueTypeAliasDecl,
             casesDecl,
             rawValuePropertyDecl,
