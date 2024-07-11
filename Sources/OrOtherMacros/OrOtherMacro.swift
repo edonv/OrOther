@@ -21,7 +21,7 @@ public struct OrOtherMacro: MemberMacro {
         // If the declaration already includes explicit conformance to RawRepresentable, it lets it slide.
         // This is because it can't generate an extension to add RawRepresentable conformance to a private type.
         guard !declaration.modifiers.contains(where: \.isPrivateAccessLevelModifier)
-                || (declaration.inheritanceClause?.inheritedTypes ?? []).contains(type: "RawRepresentable") else {
+                || (declaration.inheritanceClause?.inheritedTypes ?? []).containsType(withName: "RawRepresentable") else {
             context.diagnose(OrOtherMacroDiagnostic.requiresEnumNotPrivateOrExplicitRawRep.diagnose(at: declaration))
             return []
         }
