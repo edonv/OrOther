@@ -1,7 +1,7 @@
 import OrOther
 
 @OrOther/*<String>*/
-private enum EnumTest {
+private enum EnumTest: RawRepresentable {
     private enum Options: String {
         case a
         case b
